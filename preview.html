@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NextGen BioVentures</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;color:#1E293B}
+nav{background:#050E1A;color:white;padding:15px 30px;position:sticky;top:0}
+.hero{background:#050E1A;color:white;text-align:center;padding:100px 20px}
+.btn{display:inline-block;padding:12px 22px;margin:8px;border-radius:8px;text-decoration:none}
+.primary{background:#27AE60;color:white}
+.secondary{border:1px solid white;color:white}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;padding:50px;background:#0D1117;color:white;text-align:center}
+.stat-number{font-size:42px;color:#0EA5E9;font-weight:bold}
+.founder,.team{padding:60px 20px;max-width:1100px;margin:auto}
+.founder-wrap{display:flex;flex-wrap:wrap;gap:30px;align-items:center}
+.founder img{max-width:320px;border-radius:12px}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.card{border:1px solid #ddd;padding:20px;border-radius:12px}
+.links{background:#F8FAFC;padding:50px;text-align:center}
+footer{background:#050E1A;color:white;padding:30px;text-align:center}
+</style>
+</head>
+<body>
+
+<nav><strong>NextGen BioVentures</strong></nav>
+
+<section class="hero">
+<h1>Building the Next Generation of Bio Leaders</h1>
+<p>Bioinformatics education for life scientists — from beginner to research-ready</p>
+
+<div>
+<span class="btn primary">Explore Products</span>
+<span class="btn secondary">Subscribe Free</span>
+</div>
+
+<h3>1K+ Subscribers • 2.2K+ LinkedIn Followers • 18+ Products Sold</h3>
+</section>
+
+<section class="stats">
+<div><div class="stat-number" data-target="1082">0</div><p>Newsletter Subscribers</p></div>
+<div><div class="stat-number" data-target="2200">0</div><p>LinkedIn Followers</p></div>
+<div><div class="stat-number" data-target="18">0</div><p>Products Sold</p></div>
+<div><div class="stat-number" data-target="4">0</div><p>Countries</p></div>
+</section>
+
+<section class="founder">
+<h2>Founder</h2>
+<div class="founder-wrap">
+<img src="unnamed.jpg" alt="Deepa Mohan Poojary">
+<div>
+<h3>Deepa Mohan Poojary</h3>
+<p>Founder of NextGen BioVentures, helping life science students and researchers build practical bioinformatics skills.</p>
+<p><strong>Coming Soon 2026</strong> — Future cohort announcements will be shared later.</p>
+</div>
+</div>
+</section>
+
+<section class="team">
+<h2>Our Team</h2>
+<div class="team-grid">
+<div class="card">
+<h3>Deepa Mohan Poojary</h3>
+<p>Founder</p>
+</div>
+<div class="card">
+<h3>Dhananjaya</h3>
+<p>Pipeline Lead</p>
+</div>
+<div class="card">
+<h3>Rhea</h3>
+<p>Tech Lead</p>
+</div>
+</div>
+</section>
+
+<section class="links">
+<h2>Connect</h2>
+<p><a href="https://www.linkedin.com/in/deepamohan-suvarna?utm_source=share_via&utm_content=profile&utm_medium=member_android">LinkedIn Profile</a></p>
+<p><a href="https://deepamohanpoojary.gumroad.com/l/unesve">Gumroad Store</a></p>
+<p><a href="https://www.linkedin.com/newsletters/nextgen-bioinsights-7447566126529802240">LinkedIn Newsletter</a></p>
+</section>
+
+<footer>
+© 2026 NextGen BioVentures
+</footer>
+
+<script>
+const counters=document.querySelectorAll('.stat-number');
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+const el=entry.target;
+const target=+el.dataset.target;
+let count=0;
+const step=Math.max(1,target/100);
+const timer=setInterval(()=>{
+count+=step;
+if(count>=target){
+el.textContent=target.toLocaleString()+"+";
+clearInterval(timer);
+}else{
+el.textContent=Math.floor(count).toLocaleString();
+}
+},20);
+observer.unobserve(el);
+}
+});
+});
+counters.forEach(c=>observer.observe(c));
+</script>
+
+</body>
+</html>
