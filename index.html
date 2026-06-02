@@ -1,841 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="NextGen BioVentures — Bioinformatics education for life scientists. From beginner to research-ready.">
-<meta property="og:title" content="NextGen BioVentures — Building the Next Generation of Bio Leaders">
-<meta property="og:description" content="Bioinformatics education for life scientists — from beginner to research-ready.">
-<title>NextGen BioVentures — Building the Next Generation of Bio Leaders</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --navy: #050E1A;
-    --brand-blue: #0B3C6E;
-    --cyan: #0EA5E9;
-    --green: #27AE60;
-    --green-dark: #1E8449;
-    --green-light: #E8F5E9;
-    --white: #FFFFFF;
-    --light-grey: #F8FAFC;
-    --mid-grey: #E2E8F0;
-    --text-grey: #475569;
-    --body-dark: #1E293B;
-    --near-black: #0D1117;
-  }
-  html { scroll-behavior: smooth; }
-  body { font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--body-dark); background: var(--white); line-height: 1.65; overflow-x: hidden; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NextGen BioVentures</title>
 
-  /* NAVBAR */
-  .navbar {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    height: 64px; display: flex; align-items: center; justify-content: space-between;
-    padding: 0 32px;
-    background: transparent;
-    backdrop-filter: blur(12px);
-    transition: all 0.3s ease;
-  }
-  .navbar.scrolled { background: rgba(255,255,255,0.97); box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
-  .navbar.scrolled .nav-links a { color: var(--near-black); }
-  .navbar.scrolled .nav-links a:hover { color: var(--cyan); }
-  .navbar.scrolled .nav-subscribe { background: var(--green); }
-  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .logo-icon {
-    width: 36px; height: 36px; background: linear-gradient(135deg, var(--cyan), #0B3C6E);
-    border-radius: 8px; display: flex; align-items: center; justify-content: center;
-  }
-  .logo-icon svg { width: 20px; height: 20px; }
-  .logo-text { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; color: var(--white); letter-spacing: 0.02em; line-height: 1.2; }
-  .navbar.scrolled .logo-text { color: var(--near-black); }
-  .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
-  .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.04em; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--cyan); }
-  .nav-subscribe {
-    background: var(--green); color: var(--white); padding: 9px 20px;
-    border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none;
-    transition: background 0.2s; white-space: nowrap;
-  }
-  .nav-subscribe:hover { background: var(--green-dark); }
-  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
-  .hamburger span { display: block; width: 24px; height: 2px; background: white; border-radius: 2px; transition: all 0.3s; }
-  .mobile-menu {
-    display: none; position: fixed; top: 0; right: 0; bottom: 0; width: 280px;
-    background: var(--navy); z-index: 2000; padding: 80px 32px 40px;
-    flex-direction: column; gap: 24px; transform: translateX(100%); transition: transform 0.3s ease;
-  }
-  .mobile-menu.open { transform: translateX(0); }
-  .mobile-menu a { color: white; text-decoration: none; font-size: 18px; font-weight: 500; }
-  .mobile-menu-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
-  .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1999; }
-  .mobile-overlay.open { display: block; }
+  <!-- FONTS -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&family=Fraunces:wght@700;900&display=swap" rel="stylesheet">
 
-  /* HERO */
-  .hero {
-    min-height: 100vh; background: var(--navy); display: flex; flex-direction: column;
-    align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden;
-    padding: 100px 24px 60px;
-  }
-  #particles-canvas { position: absolute; inset: 0; z-index: 0; }
-  .hero-content { position: relative; z-index: 1; max-width: 820px; }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(14,165,233,0.15); border: 1px solid rgba(14,165,233,0.3);
-    border-radius: 100px; padding: 6px 16px; margin-bottom: 28px;
-    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--cyan); letter-spacing: 0.12em; text-transform: uppercase;
-  }
-  .hero-badge span { width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
-  .hero h1 {
-    font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(40px, 7vw, 80px);
-    color: var(--white); line-height: 1.05; margin-bottom: 20px; letter-spacing: -0.02em;
-  }
-  .hero h1 span { color: var(--cyan); }
-  .hero-sub { font-size: clamp(16px, 2vw, 20px); color: rgba(255,255,255,0.7); margin-bottom: 40px; max-width: 560px; margin-left: auto; margin-right: auto; font-weight: 300; }
-  .hero-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
-  .btn-primary { background: var(--green); color: white; padding: 14px 28px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
-  .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
-  .btn-ghost { background: transparent; border: 1.5px solid rgba(255,255,255,0.5); color: white; padding: 12px 26px; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none; transition: all 0.2s; }
-  .btn-ghost:hover { border-color: white; }
-  .hero-stats { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-  .stat-badge {
-    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 100px; padding: 8px 18px; font-size: 13px; color: rgba(255,255,255,0.85); font-weight: 500;
-    backdrop-filter: blur(8px);
-  }
-  .stat-badge strong { color: var(--cyan); }
-  .scroll-arrow { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; z-index: 1; }
-  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+  <style>
+    :root {
+      --cyan: #0ea5e9;
+      --cyan-light: #e0f7ff;
+      --green: #22c55e;
+      --green-dark: #15803d;
+      --green-light: #e8f5e9;
+      --near-black: #0f172a;
+      --text-grey: #6b7280;
+      --body-dark: #374151;
+      --mid-grey: #d1d5db;
+      --light-grey: #f3f4f6;
+      --white: #ffffff;
+    }
 
-  /* SECTIONS */
-  .section { padding: 80px 24px; }
-  .section-inner { max-width: 1200px; margin: 0 auto; }
-  .section-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--cyan); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 12px; }
-  .section-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(28px, 4vw, 42px); color: var(--near-black); line-height: 1.1; margin-bottom: 16px; }
-  .section-sub { font-size: 17px; color: var(--text-grey); max-width: 580px; font-weight: 300; }
+    body {
+      margin: 0;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--near-black);
+    }
 
-  /* VALUE PROP */
-  .value-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; margin-top: 56px; }
-  .value-card { padding: 32px; border-radius: 16px; border: 1.5px solid var(--mid-grey); transition: all 0.3s; }
-  .value-card:hover { border-color: var(--cyan); box-shadow: 0 8px 32px rgba(14,165,233,0.1); transform: translateY(-4px); }
-  .value-icon { width: 52px; height: 52px; border-radius: 12px; background: var(--green-light); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-  .value-icon svg { width: 26px; height: 26px; stroke: var(--green); }
-  .value-card h3 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--near-black); margin-bottom: 10px; }
-  .value-card p { font-size: 15px; color: var(--text-grey); line-height: 1.65; }
+    .section {
+      padding: 80px 0;
+    }
 
-  /* PRODUCTS */
-  .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 48px; }
-  .product-card {
-    background: white; border-radius: 14px; border: 1.5px solid var(--mid-grey);
-    overflow: hidden; transition: all 0.3s; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    display: flex; flex-direction: column;
-  }
-  .product-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.12); transform: translateY(-4px); }
-  .product-card-top { height: 4px; background: var(--green); }
-  .product-cover { aspect-ratio: 16/9; background: linear-gradient(135deg, #0B3C6E 0%, #050E1A 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-  .product-cover-icon { font-size: 48px; opacity: 0.3; }
-  .product-cover-label { position: absolute; bottom: 12px; left: 12px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--cyan); letter-spacing: 0.12em; text-transform: uppercase; }
-  .product-cover svg { width: 64px; height: 64px; opacity: 0.4; }
-  .product-body { padding: 20px 24px 24px; flex: 1; display: flex; flex-direction: column; }
-  .product-tag { display: inline-block; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; padding: 4px 12px; border-radius: 100px; background: #E0F7FA; color: #004D5C; margin-bottom: 10px; text-transform: uppercase; }
-  .product-tag.coming { background: #F8FAFC; color: var(--text-grey); }
-  .product-body h3 { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--near-black); margin-bottom: 8px; line-height: 1.3; }
-  .product-body p { font-size: 14px; color: var(--text-grey); line-height: 1.6; flex: 1; margin-bottom: 16px; }
-  .product-footer { display: flex; align-items: center; justify-content: space-between; }
-  .product-price { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--near-black); }
-  .product-price small { font-size: 12px; color: var(--text-grey); font-weight: 400; font-family: 'DM Sans', sans-serif; margin-left: 4px; }
-  .btn-get { background: var(--green); color: white; padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; transition: background 0.2s; }
-  .btn-get:hover { background: var(--green-dark); }
-  .btn-soon { background: var(--mid-grey); color: var(--text-grey); padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; }
-  .center-btn { text-align: center; margin-top: 40px; }
-  .btn-outlined { display: inline-flex; align-items: center; gap: 8px; border: 2px solid var(--green); color: var(--green); padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
-  .btn-outlined:hover { background: var(--green-light); }
+    .section-inner {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+    }
 
-  /* NUMBERS */
-  .numbers-section { background: var(--navy); padding: 80px 24px; }
-  .numbers-inner { max-width: 1000px; margin: 0 auto; }
-  .numbers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 40px; }
-  .number-item { text-align: center; }
-  .number-val { font-family: 'Fraunces', serif; font-size: 52px; font-weight: 700; color: var(--cyan); line-height: 1; display: block; }
-  .number-label { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 8px; font-weight: 300; }
-  .numbers-quote { text-align: center; font-family: 'Fraunces', serif; font-size: 20px; color: rgba(255,255,255,0.8); font-style: italic; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      color: var(--cyan);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
 
-  /* FOUNDER */
-  .founder-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 64px; align-items: center; margin-top: 48px; }
-  .founder-img-wrap { position: relative; }
-  .founder-img-placeholder {
-    aspect-ratio: 4/5; border-radius: 20px; overflow: hidden;
-    background: linear-gradient(135deg, #0B3C6E 0%, #050E1A 100%);
-    display: flex; align-items: flex-end; justify-content: center;
-  }
-  .founder-img-placeholder .founder-silhouette { width: 70%; opacity: 0.25; }
-  .founder-img-badge {
-    position: absolute; bottom: -16px; right: -16px;
-    background: white; border-radius: 12px; padding: 12px 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    font-size: 13px; font-weight: 600; color: var(--near-black);
-  }
-  .founder-img-badge span { color: var(--green); }
-  .founder-content h2 { font-family: 'Fraunces', serif; font-size: clamp(28px, 3.5vw, 40px); font-weight: 900; color: var(--near-black); margin-bottom: 8px; }
-  .founder-title { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--cyan); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 20px; }
-  .founder-bio { font-size: 16px; color: var(--text-grey); line-height: 1.75; margin-bottom: 24px; }
-  .founder-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
-  .tag { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; padding: 5px 14px; border-radius: 100px; text-transform: uppercase; }
-  .tag-green { background: var(--green-light); color: #155724; }
-  .tag-blue { background: #E0F7FA; color: #004D5C; }
-  .tag-dark { background: var(--near-black); color: white; }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
 
-  /* NEWSLETTER */
-  .newsletter-section { background: var(--green-light); padding: 80px 24px; text-align: center; }
-  .newsletter-inner { max-width: 640px; margin: 0 auto; }
-  .newsletter-section .section-title { color: var(--near-black); }
-  .newsletter-sub { font-size: 17px; color: var(--text-grey); margin-bottom: 36px; font-weight: 300; }
-  .newsletter-form { display: flex; gap: 12px; justify-content: center; }
-  .newsletter-input { flex: 1; max-width: 360px; height: 48px; border: 1.5px solid var(--mid-grey); border-radius: 8px; padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--body-dark); outline: none; transition: border-color 0.2s; }
-  .newsletter-input:focus { border-color: var(--green); }
-  .newsletter-btn { height: 48px; background: var(--green); color: white; border: none; border-radius: 8px; padding: 0 24px; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.2s; white-space: nowrap; font-family: 'DM Sans', sans-serif; }
-  .newsletter-btn:hover { background: var(--green-dark); }
-  .newsletter-proof { margin-top: 16px; font-size: 13px; color: var(--text-grey); }
+    .section-sub {
+      font-size: 16px;
+      color: var(--text-grey);
+      margin-bottom: 32px;
+    }
 
-  /* BLOG */
-  .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 48px; }
-  .blog-card { background: white; border-radius: 14px; border: 1.5px solid var(--mid-grey); overflow: hidden; transition: all 0.3s; }
-  .blog-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.1); transform: translateY(-4px); }
-  .blog-cover { height: 160px; display: flex; align-items: center; justify-content: center; }
-  .blog-cover.c1 { background: linear-gradient(135deg, #0B3C6E, #0EA5E9); }
-  .blog-cover.c2 { background: linear-gradient(135deg, #050E1A, #27AE60); }
-  .blog-cover.c3 { background: linear-gradient(135deg, #1E293B, #0B3C6E); }
-  .blog-cover svg { width: 48px; height: 48px; opacity: 0.5; }
-  .blog-body { padding: 20px 24px 24px; }
-  .blog-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .blog-cat { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--cyan); letter-spacing: 0.12em; text-transform: uppercase; }
-  .blog-date { font-size: 12px; color: var(--text-grey); }
-  .blog-body h3 { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--near-black); margin-bottom: 8px; line-height: 1.3; }
-  .blog-body p { font-size: 14px; color: var(--text-grey); line-height: 1.6; margin-bottom: 16px; }
-  .blog-link { font-size: 13px; font-weight: 600; color: var(--cyan); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
-  .blog-link:hover { text-decoration: underline; }
+    /* Founder Image */
+    .founder-img-wrap {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
 
-  /* FOOTER */
-  footer { background: var(--near-black); color: white; padding: 64px 24px 32px; }
-  .footer-inner { max-width: 1200px; margin: 0 auto; }
-  .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
-  .footer-tagline { font-size: 14px; color: rgba(255,255,255,0.5); margin: 12px 0 20px; line-height: 1.6; }
-  .footer-newsletter-row { display: flex; gap: 8px; }
-  .footer-email-input { flex: 1; height: 40px; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; background: rgba(255,255,255,0.05); padding: 0 12px; font-size: 13px; color: white; outline: none; font-family: 'DM Sans', sans-serif; }
-  .footer-email-input::placeholder { color: rgba(255,255,255,0.3); }
-  .footer-email-input:focus { border-color: var(--green); }
-  .footer-sub-btn { height: 40px; background: var(--green); color: white; border: none; border-radius: 8px; padding: 0 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
-  .footer-col h4 { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: white; margin-bottom: 16px; }
-  .footer-col ul { list-style: none; }
-  .footer-col ul li { margin-bottom: 10px; }
-  .footer-col ul li a { font-size: 14px; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s; }
-  .footer-col ul li a:hover { color: var(--cyan); }
-  .footer-col .contact-line { font-size: 14px; color: rgba(255,255,255,0.55); margin-bottom: 8px; }
-  .footer-col .contact-line a { color: var(--cyan); text-decoration: none; }
-  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: gap; gap: 12px; }
-  .footer-copy { font-size: 13px; color: rgba(255,255,255,0.35); }
-  .linkedin-link { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 14px; text-decoration: none; color: rgba(255,255,255,0.7); font-size: 13px; transition: background 0.2s; }
-  .linkedin-link:hover { background: rgba(14,165,233,0.2); color: var(--cyan); }
+    .founder-img-badge {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: rgba(255,255,255,0.9);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--near-black);
+    }
 
-  /* AI CHAT */
-  .chat-btn {
-    position: fixed; bottom: 28px; right: 28px; z-index: 9999;
-    width: 52px; height: 52px; border-radius: 50%; background: var(--green);
-    border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 4px 20px rgba(39,174,96,0.4); transition: all 0.3s;
-  }
-  .chat-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(39,174,96,0.5); }
-  .chat-btn svg { width: 24px; height: 24px; stroke: white; }
-  .chat-window {
-    position: fixed; bottom: 92px; right: 28px; z-index: 9998;
-    width: 380px; height: 520px; background: white; border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.2); display: none; flex-direction: column; overflow: hidden;
-  }
-  .chat-window.open { display: flex; }
-  .chat-header { background: var(--navy); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; }
-  .chat-header-info { display: flex; align-items: center; gap: 10px; }
-  .chat-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--cyan), var(--green)); display: flex; align-items: center; justify-content: center; }
-  .chat-avatar svg { width: 16px; height: 16px; stroke: white; }
-  .chat-header h4 { font-size: 14px; font-weight: 600; color: white; }
-  .chat-header p { font-size: 11px; color: rgba(255,255,255,0.5); }
-  .chat-close { background: none; border: none; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 20px; padding: 2px; }
-  .chat-close:hover { color: white; }
-  .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-  .chat-msg { max-width: 80%; border-radius: 12px; padding: 10px 14px; font-size: 14px; line-height: 1.5; }
-  .chat-msg.ai { background: var(--light-grey); color: var(--body-dark); border-bottom-left-radius: 4px; align-self: flex-start; }
-  .chat-msg.user { background: var(--green); color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
-  .chat-typing { display: flex; gap: 4px; align-items: center; padding: 12px 16px; }
-  .chat-typing span { width: 7px; height: 7px; background: var(--text-grey); border-radius: 50%; animation: typing 1.2s infinite; }
-  .chat-typing span:nth-child(2) { animation-delay: 0.2s; }
-  .chat-typing span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes typing { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
-  .chat-suggestions { padding: 0 16px 12px; display: flex; flex-wrap: wrap; gap: 8px; }
-  .chat-chip { background: var(--light-grey); border: 1px solid var(--mid-grey); border-radius: 100px; padding: 6px 12px; font-size: 12px; color: var(--text-grey); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-  .chat-chip:hover { background: var(--green-light); border-color: var(--green); color: var(--green-dark); }
-  .chat-input-row { padding: 12px 16px; border-top: 1px solid var(--mid-grey); display: flex; gap: 10px; align-items: center; }
-  .chat-input { flex: 1; border: 1.5px solid var(--mid-grey); border-radius: 8px; padding: 9px 14px; font-size: 14px; font-family: 'DM Sans', sans-serif; outline: none; }
-  .chat-input:focus { border-color: var(--green); }
-  .chat-send { background: var(--green); border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
-  .chat-send:hover { background: var(--green-dark); }
-  .chat-send svg { width: 16px; height: 16px; stroke: white; }
+    /* Team Section */
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 32px;
+    }
 
-  /* RESPONSIVE */
-  @media (max-width: 900px) {
-    .numbers-grid { grid-template-columns: repeat(2, 1fr); }
-    .founder-grid { grid-template-columns: 1fr; gap: 40px; }
-    .founder-img-placeholder { max-width: 320px; }
-    .footer-grid { grid-template-columns: 1fr 1fr; }
-    .footer-grid > *:first-child { grid-column: 1 / -1; }
-  }
-  @media (max-width: 768px) {
-    .nav-links, .nav-subscribe { display: none; }
-    .hamburger { display: flex; }
-    .mobile-menu { display: flex; }
-    .section { padding: 60px 16px; }
-    .newsletter-form { flex-direction: column; align-items: center; }
-    .newsletter-input { max-width: 100%; }
-    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
-    .chat-window { width: 90vw; right: 5vw; height: 70vh; }
-    .numbers-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
-    .number-val { font-size: 40px; }
-  }
-  @media (max-width: 480px) {
-    .footer-newsletter-row { flex-direction: column; }
-    .footer-bottom { flex-direction: column; align-items: flex-start; }
-  }
-</style>
+    .value-card {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      border: 1.5px solid var(--mid-grey);
+    }
+
+    /* Stats */
+    .stat-badge {
+      display: inline-block;
+      background: var(--cyan-light);
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      color: var(--cyan);
+      font-weight: 600;
+      margin-right: 10px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--near-black);
+      color: white;
+      padding: 60px 0 30px;
+    }
+
+    .footer-inner {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 40px;
+    }
+
+    .footer-col h4 {
+      margin-bottom: 12px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer-col ul li a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .footer-bottom {
+      margin-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
+<!-- HERO SECTION -->
+<section class="section" id="hero" style="padding-top:120px;">
+  <div class="section-inner">
+    <h1 class="section-title" style="font-size:48px;max-width:700px;">
+      Bioinformatics for Life Scientists — Made Simple.
+    </h1>
+    <p class="section-sub" style="max-width:600px;">
+      Learn computational biology with beginner‑friendly guides, workshops, and career roadmaps designed for wet‑lab scientists transitioning into bioinformatics.
+    </p>
 
-<!-- NAVBAR -->
-<nav class="navbar" id="navbar">
-  <a class="logo" href="#">
-    <div class="logo-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 2C8 6 4 8 4 12s4 6 8 10c4-4 8-6 8-10s-4-6-8-10z"/>
-        <circle cx="12" cy="12" r="2" fill="white" stroke="none"/>
-      </svg>
+    <div style="margin-top:24px;">
+      <div class="stat-badge"><strong>1k+</strong> Subscribers</div>
+      <div class="stat-badge"><strong>2.2k+</strong> LinkedIn Followers</div>
+      <div class="stat-badge"><strong>18+</strong> Products Sold</div>
     </div>
-    <div class="logo-text">NextGen<br>BioVentures</div>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#products">Products</a></li>
-    <li><a href="#workshops">Workshops</a></li>
-    <li><a href="#blog">Blog</a></li>
-    <li><a href="#resources">Resources</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <a href="#newsletter" class="nav-subscribe">Subscribe Free</a>
-  <div class="hamburger" id="hamburger" onclick="openMenu()">
-    <span></span><span></span><span></span>
-  </div>
-</nav>
-
-<div class="mobile-overlay" id="mobile-overlay" onclick="closeMenu()"></div>
-<div class="mobile-menu" id="mobile-menu">
-  <button class="mobile-menu-close" onclick="closeMenu()">✕</button>
-  <a href="#" onclick="closeMenu()">Home</a>
-  <a href="#about" onclick="closeMenu()">About</a>
-  <a href="#products" onclick="closeMenu()">Products</a>
-  <a href="#workshops" onclick="closeMenu()">Workshops</a>
-  <a href="#blog" onclick="closeMenu()">Blog</a>
-  <a href="#resources" onclick="closeMenu()">Resources</a>
-  <a href="#contact" onclick="closeMenu()">Contact</a>
-  <a href="#newsletter" onclick="closeMenu()" style="color: var(--green); font-weight: 700;">Subscribe Free →</a>
-</div>
-
-<!-- HERO -->
-<section class="hero">
-  <canvas id="particles-canvas"></canvas>
-  <div class="hero-content">
-    <div class="hero-badge">
-      <span></span>
-      Bioinformatics Education Platform
-    </div>
-    <h1>Building the Next<br>Generation of <span>Bio Leaders</span></h1>
-    <p class="hero-sub">Bioinformatics education for life scientists — from beginner to research-ready</p>
-    <div class="hero-ctas">
-      <a href="#products" class="btn-primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-        Explore Products
-      </a>
-      <a href="#newsletter" class="btn-ghost">Subscribe Free</a>
-    </div>
-    <div class="hero-stats">
-      <div class="stat-badge"><strong>890+</strong> Subscribers</div>
-      <div class="stat-badge"><strong>2,000+</strong> LinkedIn Followers</div>
-      <div class="stat-badge"><strong>17+</strong> Products Sold</div>
-    </div>
-  </div>
-  <div class="scroll-arrow">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
   </div>
 </section>
 
-<!-- VALUE PROPOSITION -->
-<section class="section" style="background: var(--white);">
+<!-- VALUE SECTION -->
+<section class="section" id="value">
   <div class="section-inner">
-    <div class="section-label">Our Mission</div>
-    <h2 class="section-title">Why NextGen BioVentures?</h2>
-    <p class="section-sub">We exist to close the gap between biological intuition and computational capability.</p>
+    <div class="section-label">Why NextGen</div>
+    <h2 class="section-title">Bioinformatics Doesn’t Have to Be Hard</h2>
+    <p class="section-sub">We simplify complex computational concepts so life scientists can learn faster and build real‑world skills.</p>
+
     <div class="value-grid">
       <div class="value-card">
-        <div class="value-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-          </svg>
-        </div>
-        <h3>Research-backed content</h3>
-        <p>Every guide, every tool recommendation, every roadmap is validated against current 2026 industry standards — not outdated tutorials.</p>
+        <h3>Beginner‑Friendly</h3>
+        <p>Everything is written for wet‑lab scientists with no coding background.</p>
       </div>
       <div class="value-card">
-        <div class="value-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-          </svg>
-        </div>
-        <h3>Built for life scientists</h3>
-        <p>Not for software engineers learning biology. For biologists learning computation — in that exact order. Your background is the starting point.</p>
+        <h3>Career‑Focused</h3>
+        <p>Roadmaps, portfolios, and guidance to help you transition into computational roles.</p>
       </div>
       <div class="value-card">
-        <div class="value-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
-        </div>
-        <h3>Real community</h3>
-        <p>A growing network of researchers, students, and professionals navigating the same transition together — across India, UK, USA, Africa, and Europe.</p>
+        <h3>Practical Skills</h3>
+        <p>Learn tools like R, Python, Seurat, DESeq2, Galaxy, and more.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PRODUCTS -->
-<section id="products" class="section" style="background: var(--light-grey);">
+<!-- PRODUCTS SECTION -->
+<section class="section" id="products">
   <div class="section-inner">
-    <div class="section-label">Resources</div>
+    <div class="section-label">Products</div>
     <h2 class="section-title">Start Learning Today</h2>
-    <p class="section-sub">Practical, peer-validated resources built specifically for life scientists entering computational biology.</p>
-    <div class="products-grid">
-      <div class="product-card">
-        <div class="product-card-top"></div>
-        <div class="product-cover">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-          <div class="product-cover-label">Guide 2026</div>
-        </div>
-        <div class="product-body">
-          <span class="product-tag">Guide</span>
-          <h3>GitHub for Life Scientists 2026</h3>
-          <p>Version control, collaboration, and portfolio-building — explained for biologists with zero coding experience.</p>
-          <div class="product-footer">
-            <div class="product-price">₹499 <small>/ $6 USD</small></div>
-            <a href="#" class="btn-get">Get Now →</a>
-          </div>
-        </div>
+
+    <div class="value-grid">
+      <div class="value-card">
+        <h3>GitHub for Life Scientists</h3>
+        <p>A beginner‑friendly guide to building your first GitHub portfolio.</p>
       </div>
-      <div class="product-card">
-        <div class="product-card-top"></div>
-        <div class="product-cover">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <div class="product-cover-label">Personalised</div>
-        </div>
-        <div class="product-body">
-          <span class="product-tag">Roadmap</span>
-          <h3>Personalised Career Roadmap</h3>
-          <p>A custom 12-month plan tailored to your background, goals, and available time — built 1:1 with Deepa.</p>
-          <div class="product-footer">
-            <div class="product-price">₹1,499 <small>/ $18 USD</small></div>
-            <a href="#" class="btn-get">Order Yours →</a>
-          </div>
-        </div>
+      <div class="value-card">
+        <h3>Bioinformatics Roadmap PDF</h3>
+        <p>A complete roadmap for transitioning from wet‑lab to computational biology.</p>
       </div>
-      <div class="product-card">
-        <div class="product-card-top"></div>
-        <div class="product-cover">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          <div class="product-cover-label">PDF Resource</div>
-        </div>
-        <div class="product-body">
-          <span class="product-tag">Roadmap</span>
-          <h3>Bioinformatics Roadmap PDF</h3>
-          <p>Step-by-step visual roadmap from beginner to research-ready. 40+ tools, 12 milestones, curated resources.</p>
-          <div class="product-footer">
-            <div class="product-price">₹299 <small>/ $4 USD</small></div>
-            <a href="#" class="btn-get">Get Now →</a>
-          </div>
-        </div>
+      <div class="value-card">
+        <h3>Personalized Career Roadmap</h3>
+        <p>1:1 guidance to help you break into bioinformatics roles.</p>
       </div>
-      <div class="product-card">
-        <div class="product-card-top" style="background: var(--mid-grey);"></div>
-        <div class="product-cover" style="background: linear-gradient(135deg, #1E293B, #0D1117);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          <div class="product-cover-label" style="color: rgba(255,255,255,0.35);">Coming 2026</div>
-        </div>
-        <div class="product-body">
-          <span class="product-tag coming">Coming Soon</span>
-          <h3>scRNA-seq Analysis Starter Kit</h3>
-          <p>Your complete guide to single-cell RNA sequencing — from raw data to publication-ready figures.</p>
-          <div class="product-footer">
-            <div class="product-price" style="color: var(--text-grey);">Notify me</div>
-            <span class="btn-soon">Coming Soon</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="center-btn">
-      <a href="#" class="btn-outlined">View All Products →</a>
     </div>
   </div>
 </section>
 
-<!-- NUMBERS -->
-<section class="numbers-section">
-  <div class="numbers-inner">
-    <div class="numbers-grid">
-      <div class="number-item">
-        <span class="number-val" data-target="890">0</span>
-        <div class="number-label">Newsletter Subscribers</div>
-      </div>
-      <div class="number-item">
-        <span class="number-val" data-target="2000">0</span>
-        <div class="number-label">LinkedIn Followers</div>
-      </div>
-      <div class="number-item">
-        <span class="number-val" data-target="17">0</span>
-        <div class="number-label">Products Sold</div>
-      </div>
-      <div class="number-item">
-        <span class="number-val" data-target="4">0</span>
-        <div class="number-label">Countries Reached</div>
-      </div>
-    </div>
-    <p class="numbers-quote">"Built from scratch — by a researcher, for researchers"</p>
-  </div>
-</section>
-
-<!-- ABOUT / FOUNDER -->
-<section id="about" class="section" style="background: var(--white);">
+<!-- NUMBERS SECTION -->
+<section class="section numbers-section" style="background:var(--light-grey);">
   <div class="section-inner">
-    <div class="founder-grid">
-      <div class="founder-img-wrap">
-        <div class="founder-img-placeholder">
-          <svg class="founder-silhouette" viewBox="0 0 200 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="100" cy="70" rx="45" ry="50" fill="white" opacity="0.6"/>
-            <path d="M20 280 C20 180 40 160 100 155 C160 160 180 180 180 280Z" fill="white" opacity="0.6"/>
-          </svg>
-        </div>
-        <div class="founder-img-badge">
-          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-grey);letter-spacing:0.1em;margin-bottom:2px;">FOUNDER</div>
-          <div>NextGen BioVentures <span>✓</span></div>
-        </div>
+    <div class="value-grid">
+      <div class="value-card" style="text-align:center;">
+        <span class="number-val" data-target="1000">0</span>
+        <p>Subscribers</p>
       </div>
-      <div class="founder-content">
-        <div class="section-label">Meet the Founder</div>
-        <h2>Deepa Mohan Poojary</h2>
-        <div class="founder-title">MSc Biotechnology · Proteomics Researcher · Educator</div>
-        <p class="founder-bio">
-          Deepa built NextGen BioVentures from the ground up — as a researcher who felt the gap between biological training and computational tools firsthand. After completing her MSc in Biotechnology with a focus on proteomics, she set out to create the resource she wished she'd had: clear, practical, researcher-validated guidance for life scientists entering computation.
-        </p>
-        <p class="founder-bio" style="margin-top: -8px;">
-          Today, NextGen BioVentures reaches 890+ subscribers across four continents, with 17+ products designed to make bioinformatics genuinely accessible.
-        </p>
-        <div class="founder-tags">
-          <span class="tag tag-green">MSc Biotechnology</span>
-          <span class="tag tag-blue">Proteomics Research</span>
-          <span class="tag tag-green">NGB Founder</span>
-          <span class="tag tag-dark">Mangaluru</span>
-        </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <a href="#" class="btn-primary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-            Connect on LinkedIn
-          </a>
-          <a href="#products" class="btn-outlined">Explore Products</a>
-        </div>
+      <div class="value-card" style="text-align:center;">
+        <span class="number-val" data-target="2200">0</span>
+        <p>LinkedIn Followers</p>
+      </div>
+      <div class="value-card" style="text-align:center;">
+        <span class="number-val" data-target="18">0</span>
+        <p>Products Sold</p>
+      </div>
+      <div class="value-card" style="text-align:center;">
+        <span class="number-val" data-target="4">0</span>
+        <p>Workshops Hosted</p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- FOUNDER SECTION (IMAGE UPDATED IN PART 3) -->
+<section class="section" id="founder">
+  <div class="section-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
+    <div>
+      <div class="section-label">Founder</div>
+      <h2 class="section-title">Meet Deepa Mohan Poojary</h2>
+      <p class="section-sub">
+        Biotechnology graduate and proteomics researcher helping life scientists transition into computational biology with clarity and confidence.
+      </p>
+    </div>
+
+    <!-- Placeholder replaced in Part 3 -->
+    <div id="founder-image-placeholder"></div>
   </div>
 </section>
 
 <!-- NEWSLETTER -->
-<section id="newsletter" class="newsletter-section">
-  <div class="newsletter-inner">
-    <div class="section-label" style="color: var(--green-dark);">Free Weekly Newsletter</div>
-    <h2 class="section-title" style="font-size: clamp(26px, 4vw, 38px);">The Bioinformatics Brief</h2>
-    <p class="newsletter-sub">Research updates, career guidance, and tool breakdowns — delivered to 890+ life scientists every week. Free, always.</p>
-    <div class="newsletter-form">
-      <input type="email" class="newsletter-input" placeholder="Enter your email address">
-      <button class="newsletter-btn">Subscribe Free →</button>
-    </div>
-    <p class="newsletter-proof">Join researchers from India, UK, USA, Africa, and Europe</p>
+<section class="section" id="newsletter" style="background:var(--cyan-light);">
+  <div class="section-inner">
+    <div class="section-label">Newsletter</div>
+    <h2 class="section-title">NextGen BioInsights</h2>
+    <p class="section-sub">Weekly insights on bioinformatics, careers, and computational biology.</p>
+
+    <a href="https://www.linkedin.com/newsletters/nextgen-bioinsights-7447566126529802240" 
+       target="_blank" 
+       style="display:inline-block;padding:14px 22px;background:var(--cyan);color:white;border-radius:10px;text-decoration:none;font-weight:600;">
+      Read on LinkedIn →
+    </a>
   </div>
 </section>
 
 <!-- BLOG -->
-<section id="blog" class="section" style="background: var(--white);">
+<section class="section" id="blog">
   <div class="section-inner">
-    <div class="section-label">The Bioinformatics Brief</div>
-    <h2 class="section-title">Latest from NextGen BioInsights</h2>
-    <p class="section-sub">Tools, career guidance, and field updates — written for life scientists.</p>
-    <div class="blog-grid">
-      <div class="blog-card">
-        <div class="blog-cover c1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-        </div>
-        <div class="blog-body">
-          <div class="blog-meta">
-            <span class="blog-cat">Tools</span>
-            <span class="blog-date">May 2026</span>
-          </div>
-          <h3>Why Every Life Scientist Needs a GitHub Profile in 2026</h3>
-          <p>Version control isn't just for software engineers. Here's why biologists who learn Git land better research roles.</p>
-          <a href="#" class="blog-link">Read More →</a>
-        </div>
-      </div>
-      <div class="blog-card">
-        <div class="blog-cover c2">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        </div>
-        <div class="blog-body">
-          <div class="blog-meta">
-            <span class="blog-cat">Career</span>
-            <span class="blog-date">Apr 2026</span>
-          </div>
-          <h3>From Wetlab to Computational: A 12-Month Transition Roadmap</h3>
-          <p>The exact steps, tools, and mindset shifts you need to make the move from bench science to bioinformatics.</p>
-          <a href="#" class="blog-link">Read More →</a>
-        </div>
-      </div>
-      <div class="blog-card">
-        <div class="blog-cover c3">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-        </div>
-        <div class="blog-body">
-          <div class="blog-meta">
-            <span class="blog-cat">Research Updates</span>
-            <span class="blog-date">Mar 2026</span>
-          </div>
-          <h3>scRNA-seq in 2026: The Tools That Actually Matter</h3>
-          <p>A no-hype breakdown of the single-cell RNA sequencing tools worth learning this year — and why.</p>
-          <a href="#" class="blog-link">Read More →</a>
-        </div>
+    <div class="section-label">Blog</div>
+    <h2 class="section-title">Latest Articles</h2>
+
+    <div class="value-grid">
+      <div class="value-card">
+        <h3>How to Start with scRNA‑seq</h3>
+<!-- UPDATED FOUNDER SECTION -->
+<section class="section" id="founder">
+  <div class="section-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
+    
+    <div>
+      <div class="section-label">Founder</div>
+      <h2 class="section-title">Meet Deepa Mohan Poojary</h2>
+      <p class="section-sub">
+        Biotechnology graduate and proteomics researcher helping life scientists transition into computational biology with clarity and confidence.
+      </p>
+    </div>
+
+    <!-- Founder Image -->
+    <div class="founder-img-wrap">
+      <img src="unnamed.jpeg"
+           alt="Deepa Mohan Poojary"
+           style="width:100%;height:100%;object-fit:cover;border-radius:20px;">
+      <div class="founder-img-badge">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;margin-bottom:2px;">FOUNDER</div>
+        <div>NextGen BioVentures ✓</div>
       </div>
     </div>
-    <div class="center-btn">
-      <a href="#" class="btn-outlined">View All Articles →</a>
-    </div>
+
   </div>
 </section>
 
-<!-- WORKSHOPS -->
-<section id="workshops" class="section" style="background: var(--light-grey);">
+
+<!-- TEAM SECTION -->
+<section id="team" class="section" style="background: var(--light-grey);">
   <div class="section-inner">
-    <div class="section-label">Live Learning</div>
-    <h2 class="section-title">Learn Bioinformatics with Real Experts</h2>
-    <p class="section-sub">Cohort-based workshops with hands-on datasets, live sessions, and direct access to instructors.</p>
-    <div style="background:white;border-radius:20px;border:1.5px solid var(--mid-grey);padding:40px;margin-top:48px;display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:center;" class="workshop-card">
-      <div>
-        <div style="display:inline-flex;align-items:center;gap:8px;background:#E8F5E9;border-radius:100px;padding:6px 16px;margin-bottom:20px;">
-          <span style="width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;"></span>
-          <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green-dark);letter-spacing:0.12em;">ENROLLING NOW</span>
-        </div>
-        <h3 style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--near-black);margin-bottom:12px;">Python for Biologists — Cohort 3</h3>
-        <p style="font-size:15px;color:var(--text-grey);margin-bottom:20px;">A practical 6-week live cohort covering Python fundamentals, data manipulation with pandas, and biological data visualisation. No prior coding experience required.</p>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px;">
-          <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--body-dark);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            6 live sessions + recordings
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--body-dark);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Real biological datasets included
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--body-dark);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Certificate of completion
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--body-dark);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Limited spots — 20 max
-          </div>
-        </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <a href="#" class="btn-primary">Register Now (INR)</a>
-          <a href="#" class="btn-outlined" style="font-size:13px;">International (USD)</a>
-        </div>
+    
+    <div class="section-label">Our Team</div>
+    <h2 class="section-title">The People Behind NextGen BioVentures</h2>
+    <p class="section-sub">A small but dedicated team helping life scientists transition into computational biology.</p>
+
+    <div class="value-grid" style="margin-top:48px;">
+      
+      <!-- Founder (Circular Portrait) -->
+      <div class="value-card" style="text-align:center;">
+        <img src="unnamed.jpeg"
+             alt="Deepa Mohan Poojary"
+             style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:16px;">
+        <h3>Deepa Mohan Poojary</h3>
+        <p style="font-size:14px;color:var(--text-grey);">Founder · MSc Biotechnology · Proteomics Researcher</p>
       </div>
-      <div style="text-align:center;">
-        <div style="background:var(--light-grey);border-radius:16px;padding:32px;">
-          <div style="font-family:'Fraunces',serif;font-size:48px;font-weight:900;color:var(--cyan);">₹2,999</div>
-          <div style="font-size:13px;color:var(--text-grey);margin-bottom:4px;">/ $36 USD</div>
-          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-grey);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;">Per person</div>
-          <div style="font-size:13px;color:var(--body-dark);background:white;border-radius:10px;padding:12px;">
-            <strong style="color:var(--near-black);">Starts:</strong> June 15, 2026<br>
-            <strong style="color:var(--near-black);">Duration:</strong> 6 weeks<br>
-            <strong style="color:var(--near-black);">Spots left:</strong> <span style="color:var(--green);font-weight:700;">7 remaining</span>
-          </div>
-        </div>
+
+      <!-- Advisor (No Image) -->
+      <div class="value-card" style="text-align:center;">
+        <div style="width:120px;height:120px;border-radius:50%;background:var(--mid-grey);margin:0 auto 16px;"></div>
+        <h3>Dr. Biswapriya Misra</h3>
+        <p style="font-size:14px;color:var(--text-grey);">Senior Advisor · Computational Biology</p>
       </div>
+
     </div>
   </div>
 </section>
-
-<!-- CONTACT -->
-<section id="contact" class="section" style="background: var(--white);">
-  <div class="section-inner">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;">
-      <div>
-        <div class="section-label">Get in Touch</div>
-        <h2 class="section-title">Let's Connect</h2>
-        <p class="section-sub" style="margin-bottom:32px;">Collaborations, product questions, media inquiries — we respond within 48 hours.</p>
-        <div style="display:flex;flex-direction:column;gap:16px;">
-          <div style="display:flex;align-items:center;gap:14px;font-size:15px;color:var(--body-dark);">
-            <div style="width:40px;height:40px;background:var(--light-grey);border-radius:10px;display:flex;align-items:center;justify-content:center;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </div>
-            <a href="mailto:deepamohanpoojary@gmail.com" style="color:var(--cyan);text-decoration:none;">deepamohanpoojary@gmail.com</a>
-          </div>
-          <div style="display:flex;align-items:center;gap:14px;font-size:15px;color:var(--body-dark);">
-            <div style="width:40px;height:40px;background:var(--light-grey);border-radius:10px;display:flex;align-items:center;justify-content:center;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-            </div>
-            <a href="#" style="color:var(--cyan);text-decoration:none;">NextGen BioVentures on LinkedIn</a>
-          </div>
-          <div style="display:flex;align-items:center;gap:14px;font-size:15px;color:var(--body-dark);">
-            <div style="width:40px;height:40px;background:var(--light-grey);border-radius:10px;display:flex;align-items:center;justify-content:center;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-            </div>
-            <a href="#" style="color:var(--cyan);text-decoration:none;">Shop on Gumroad</a>
-          </div>
-        </div>
-        <div style="margin-top:28px;padding:16px;background:var(--green-light);border-radius:10px;font-size:14px;color:var(--green-dark);">
-          ⏱ We aim to respond within <strong>48 hours</strong>.
-        </div>
-      </div>
-      <div>
-        <form id="contact-form" style="display:flex;flex-direction:column;gap:16px;" onsubmit="handleForm(event)">
-          <div>
-            <label style="font-size:13px;font-weight:600;color:var(--near-black);display:block;margin-bottom:6px;">Name</label>
-            <input type="text" placeholder="Your full name" required style="width:100%;height:48px;border:1.5px solid var(--mid-grey);border-radius:8px;padding:12px 16px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--mid-grey)'">
-          </div>
-          <div>
-            <label style="font-size:13px;font-weight:600;color:var(--near-black);display:block;margin-bottom:6px;">Email</label>
-            <input type="email" placeholder="your@email.com" required style="width:100%;height:48px;border:1.5px solid var(--mid-grey);border-radius:8px;padding:12px 16px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--mid-grey)'">
-          </div>
-          <div>
-            <label style="font-size:13px;font-weight:600;color:var(--near-black);display:block;margin-bottom:6px;">Subject</label>
-            <select style="width:100%;height:48px;border:1.5px solid var(--mid-grey);border-radius:8px;padding:0 16px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;background:white;color:var(--body-dark);">
-              <option>General Inquiry</option>
-              <option>Collaboration</option>
-              <option>Product Question</option>
-              <option>Media</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:13px;font-weight:600;color:var(--near-black);display:block;margin-bottom:6px;">Message</label>
-            <textarea rows="4" placeholder="Tell us how we can help..." required style="width:100%;border:1.5px solid var(--mid-grey);border-radius:8px;padding:12px 16px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;line-height:1.6;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--mid-grey)'"></textarea>
-          </div>
-          <button type="submit" class="btn-primary" style="border:none;cursor:pointer;justify-content:center;">Send Message →</button>
-          <div id="form-success" style="display:none;background:var(--green-light);border-radius:8px;padding:12px 16px;font-size:14px;color:var(--green-dark);font-weight:500;">
-            ✓ Message sent! We'll get back to you within 48 hours.
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer id="resources">
-  <div class="footer-inner">
-    <div class="footer-grid">
-      <div>
-        <a class="logo" href="#" style="margin-bottom:12px;display:inline-flex;">
-          <div class="logo-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 6 4 8 4 12s4 6 8 10c4-4 8-6 8-10s-4-6-8-10z"/><circle cx="12" cy="12" r="2" fill="white" stroke="none"/></svg>
-          </div>
-          <div class="logo-text">NextGen<br>BioVentures</div>
-        </a>
-        <p class="footer-tagline">Building the Next Generation of Bio Leaders.<br>Bioinformatics education for life scientists.</p>
-        <div class="footer-newsletter-row">
-          <input class="footer-email-input" type="email" placeholder="Subscribe to newsletter">
-          <button class="footer-sub-btn">→</button>
-        </div>
-      </div>
-      <div class="footer-col">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#products">Products</a></li>
-          <li><a href="#workshops">Workshops</a></li>
-          <li><a href="#blog">Blog</a></li>
-          <li><a href="#resources">Resources</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Connect</h4>
-        <div class="contact-line"><a href="#">LinkedIn Profile →</a></div>
-        <div class="contact-line"><a href="#">Gumroad Store →</a></div>
-        <div class="contact-line" style="margin-top:16px;">
-          <a href="mailto:deepamohanpoojary@gmail.com">deepamohanpoojary@gmail.com</a>
-        </div>
-        <div style="margin-top:20px;">
-          <div style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">Advisor</div>
-          <div style="font-size:13px;color:rgba(255,255,255,0.5);">Dr. Biswapriya Misra<br><span style="font-size:12px;color:rgba(255,255,255,0.3);">Senior Advisor</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p class="footer-copy">© 2026 NextGen BioVentures. All rights reserved.</p>
-      <a href="#" class="linkedin-link">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-        Follow on LinkedIn
-      </a>
-    </div>
-  </div>
-</footer>
-
-<!-- AI CHAT BUTTON -->
-<button class="chat-btn" id="chat-btn" onclick="toggleChat()" title="Ask NextGen">
-  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-  </svg>
-</button>
-
-<div class="chat-window" id="chat-window">
-  <div class="chat-header">
-    <div class="chat-header-info">
-      <div class="chat-avatar">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 6 4 8 4 12s4 6 8 10c4-4 8-6 8-10s-4-6-8-10z"/></svg>
-      </div>
-      <div>
-        <h4>Ask NextGen</h4>
-        <p>AI Bioinformatics Assistant</p>
-      </div>
-    </div>
-    <button class="chat-close" onclick="toggleChat()">✕</button>
-  </div>
-  <div class="chat-messages" id="chat-messages">
-    <div class="chat-msg ai">Hi! I'm NextGen BioAssistant 👋 Ask me anything about bioinformatics tools, career paths, or learning resources for life scientists.</div>
-  </div>
-  <div class="chat-suggestions" id="chat-suggestions">
-    <span class="chat-chip" onclick="sendChip(this)">Best Python resources for biologists</span>
-    <span class="chat-chip" onclick="sendChip(this)">How to start scRNA-seq analysis</span>
-    <span class="chat-chip" onclick="sendChip(this)">Build a bioinformatics GitHub portfolio</span>
-  </div>
-  <div class="chat-input-row">
-    <input class="chat-input" id="chat-input" type="text" placeholder="Ask about bioinformatics..." onkeydown="if(event.key==='Enter')sendChat()">
-    <button class="chat-send" onclick="sendChat()">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    </button>
-  </div>
-</div>
-
+<!-- JAVASCRIPT -->
 <script>
 // NAVBAR scroll behavior
 const navbar = document.getElementById('navbar');
@@ -885,12 +396,14 @@ function drawParticles() {
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
     ctx.fillStyle = `rgba(14, 165, 233, ${p.opacity})`;
     ctx.fill();
-    p.x += p.vx; p.y += p.vy;
+    p.x += p.vx; 
+    p.y += p.vy;
     if (p.x < 0) p.x = canvas.width;
     if (p.x > canvas.width) p.x = 0;
     if (p.y < 0) p.y = canvas.height;
     if (p.y > canvas.height) p.y = 0;
   });
+
   // Draw connections
   for (let i = 0; i < particles.length; i++) {
     for (let j = i + 1; j < particles.length; j++) {
@@ -907,6 +420,7 @@ function drawParticles() {
       }
     }
   }
+
   requestAnimationFrame(drawParticles);
 }
 
@@ -915,19 +429,23 @@ initParticles();
 drawParticles();
 window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
 
-// COUNTER ANIMATION
+// COUNTER ANIMATION (FIXED)
 function animateCounters() {
   const counters = document.querySelectorAll('.number-val[data-target]');
   counters.forEach(counter => {
     const target = parseInt(counter.dataset.target);
-    const suffix = target > 10 ? '+' : '';
     let current = 0;
     const duration = 1800;
     const step = target / (duration / 16);
+
     const timer = setInterval(() => {
       current = Math.min(current + step, target);
-      counter.textContent = Math.floor(current).toLocaleString() + suffix;
-      if (current >= target) clearInterval(timer);
+      counter.textContent = Math.floor(current).toLocaleString();
+
+      if (current >= target) {
+        clearInterval(timer);
+        if (target >= 1000) counter.textContent += "+";
+      }
     }, 16);
   });
 }
@@ -951,7 +469,7 @@ function handleForm(e) {
   e.target.querySelector('button[type=submit]').style.background = 'var(--green-dark)';
 }
 
-// CHAT
+// CHAT SYSTEM
 let chatOpen = false;
 const SYSTEM_PROMPT = `You are NextGen BioAssistant, an AI assistant for NextGen BioVentures — a bioinformatics education platform for life scientists. You help users with:
 - Bioinformatics tool recommendations (R, Python, Galaxy, STAR, DESeq2, Seurat, etc.)
@@ -1033,5 +551,6 @@ function sendChip(el) {
   sendChat();
 }
 </script>
+
 </body>
 </html>
